@@ -1,6 +1,7 @@
 package com.liot
 
 import com.liot.plugins.configureRouting
+import com.liot.routes.loginRoute
 import com.liot.routes.registerRoute
 import io.ktor.application.*
 import io.ktor.features.*
@@ -16,6 +17,7 @@ fun Application.module() {
     install(CallLogging)
     install(Routing) {
         registerRoute()
+        loginRoute()
     }
     install(ContentNegotiation) {
         gson {

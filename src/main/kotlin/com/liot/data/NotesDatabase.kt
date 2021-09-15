@@ -18,3 +18,8 @@ suspend fun checkIfUserExists(email: String): Boolean {
     //Compares the "email of each user (User::email)" with the email we passed
     return users.findOne(User::email eq email) != null
 }
+
+suspend fun checkPasswordForEmail(email: String, passwordToCheck: String): Boolean {
+    val actualPassword = users.findOne(User::email eq email)?.password ?: return false
+    return actualPassword == passwordToCheck
+}
