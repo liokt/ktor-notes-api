@@ -3,6 +3,7 @@ package com.liot
 import com.liot.data.checkPasswordForEmail
 import com.liot.plugins.configureRouting
 import com.liot.routes.loginRoute
+import com.liot.routes.noteRoutes
 import com.liot.routes.registerRoute
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -18,10 +19,6 @@ fun main(args: Array<String>): Unit =
 fun Application.module() {
     install(DefaultHeaders)
     install(CallLogging)
-    install(Routing) {
-        registerRoute()
-        loginRoute()
-    }
     install(ContentNegotiation) {
         gson {
             setPrettyPrinting()
@@ -32,7 +29,11 @@ fun Application.module() {
         configureAuth()
     }
 
-    configureRouting()
+    install(Routing) {
+        registerRoute()
+        loginRoute()
+        noteRoutes()
+    }
 }
 
 
