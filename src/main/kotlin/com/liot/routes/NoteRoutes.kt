@@ -1,7 +1,9 @@
 package com.liot.routes
 
 import com.liot.data.collections.Note
+import com.liot.data.deleteNoteForUser
 import com.liot.data.getNotesForUser
+import com.liot.data.requests.DeleteNoteRequest
 import com.liot.data.saveNote
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -38,6 +40,25 @@ fun Route.noteRoutes() {
                     call.respond(Conflict)
                 }
 
+            }
+        }
+    }
+
+    route("/deletenote") {
+        authenticate {
+            post{
+                val email = call.principal<UserIdPrincipal>()!!.name
+                val request = try {
+                    call.receive<DeleteNoteRequest>()
+                } catch (e: ContentTransformationException) {
+                    call.respond(BadRequest)
+                    return@post
+                }
+                if(deleteNoteForUser(email, request.id)) {
+                    call.respond(OK)
+                } else {
+                    call.respond(Conflict)
+                }
             }
         }
     }
